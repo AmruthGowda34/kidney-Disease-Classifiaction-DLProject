@@ -1,6 +1,10 @@
 # Dataset
 *.zip
 research/kidney-CT-Scan-data.zip
+
+# Artifacts / extracted datasets
+artifacts/
+
 # Python
 __pycache__/
 *.py[cod]
