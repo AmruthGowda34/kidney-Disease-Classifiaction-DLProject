@@ -1,0 +1,25 @@
+# Dataset
+*.zip
+research/kidney-CT-Scan-data.zip
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# DVC
+.dvc/cache/
+
+# IDE
+.vscode/
+.idea/
