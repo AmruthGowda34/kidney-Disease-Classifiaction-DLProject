@@ -1,1 +1,43 @@
 [2026-09-29 18:13:28,714: INFO: main: well come to our custom log.]
+[2026-10-12 14:17:48,090: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 14:17:48,091: ERROR: main: name 'ConfigurationManager' is not defined]
+Traceback (most recent call last):
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 25, in <module>
+    data_ingestion.main()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 15, in main
+    config=ConfigurationManager()
+NameError: name 'ConfigurationManager' is not defined
+[2026-10-12 14:29:23,473: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 14:29:23,474: ERROR: main: name 'ConfigurationManager' is not defined]
+Traceback (most recent call last):
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 25, in <module>
+    data_ingestion.main()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 15, in main
+    config=ConfigurationManager()
+NameError: name 'ConfigurationManager' is not defined
+[2026-10-12 14:39:52,201: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 14:39:52,202: ERROR: main: name 'ConfigurationManager' is not defined]
+Traceback (most recent call last):
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 25, in <module>
+    data_ingestion.main()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 15, in main
+    config=ConfigurationManager()
+NameError: name 'ConfigurationManager' is not defined
+[2026-10-12 14:41:57,848: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 14:41:57,848: ERROR: main: name 'ConfigurationManager' is not defined]
+Traceback (most recent call last):
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 22, in <module>
+    data_ingestion.main()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 12, in main
+    config=ConfigurationManager()
+NameError: name 'ConfigurationManager' is not defined
+[2026-10-12 14:42:17,693: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 14:42:17,708: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 14:42:17,718: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 14:42:17,719: INFO: common: created directory at: artifacts]
+[2026-10-12 14:42:17,720: INFO: common: created directory at: artifacts/data_ingestion]
+[2026-10-12 14:42:17,720: INFO: data_ingestion: Downloading data from https://drive.google.com/file/d/1TAFQkAHgxZyf3cYDFmAwC085iIjc8jy1/view into file artifacts/data_ingestion/data.zip]
+[2026-10-12 14:48:42,760: INFO: data_ingestion: Downloaded data from https://drive.google.com/file/d/1TAFQkAHgxZyf3cYDFmAwC085iIjc8jy1/view into file artifacts/data_ingestion/data.zip]
+[2026-10-12 14:49:15,859: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
+
+x==========x]
