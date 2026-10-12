@@ -41,3 +41,93 @@ NameError: name 'ConfigurationManager' is not defined
 [2026-10-12 14:49:15,859: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<
 
 x==========x]
+[2026-10-12 15:10:19,240: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 15:10:19,249: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 15:10:19,260: INFO: common: created directory at: artifacts]
+[2026-10-12 15:10:19,263: INFO: common: created directory at: artifacts/prepare_base_model]
+[2026-10-12 15:10:36,531: WARNING: saving_utils: Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.]
+[2026-10-12 15:46:25,667: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 15:46:25,670: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 15:46:25,673: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 15:46:25,674: INFO: common: created directory at: artifacts]
+[2026-10-12 15:46:25,675: INFO: common: created directory at: artifacts/data_ingestion]
+[2026-10-12 15:46:25,675: INFO: data_ingestion: Downloading data from https://drive.google.com/file/d/1TAFQkAHgxZyf3cYDFmAwC085iIjc8jy1/view into file artifacts/data_ingestion/data.zip]
+[2026-10-12 15:51:35,281: ERROR: main: Download is incomplete: received 1097334784 bytes but the server announced 1627919308 bytes.
+The received bytes are kept in C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\artifacts\data_ingestion\data.zipceadqvv1.part, which resume (--continue on the command line) picks up.]
+Traceback (most recent call last):
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 929, in _error_catcher
+    yield
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 1067, in _raw_read
+    raise IncompleteRead(self._fp_bytes_read, self.length_remaining)
+urllib3.exceptions.IncompleteRead: IncompleteRead(1097509216 bytes read, 530410092 more expected)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\requests\models.py", line 937, in generate
+    yield from self.raw.stream(chunk_size, decode_content=True)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 1291, in stream
+    data = self.read(amt=amt, decode_content=decode_content)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 1179, in read
+    data = self._raw_read(amt)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 1045, in _raw_read
+    with self._error_catcher():
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\urllib3\response.py", line 949, in _error_catcher
+    raise ProtocolError(arg, e) from e
+urllib3.exceptions.ProtocolError: ('Connection broken: IncompleteRead(1097509216 bytes read, 530410092 more expected)', IncompleteRead(1097509216 bytes read, 530410092 more expected))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 589, in _iter_response_chunks
+    for chunk in res.iter_content(chunk_size=CHUNK_SIZE):
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\requests\models.py", line 939, in generate
+    raise ChunkedEncodingError(e)
+requests.exceptions.ChunkedEncodingError: ('Connection broken: IncompleteRead(1097509216 bytes read, 530410092 more expected)', IncompleteRead(1097509216 bytes read, 530410092 more expected))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\main.py", line 11, in <module>
+    data_ingestion.main()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\src\cnnClassifier\pipeline\stage_01_data_ingestion.py", line 16, in main
+    data_ingestion.download_file()
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\src\cnnClassifier\components\data_ingestion.py", line 33, in download_file
+    raise e
+  File "C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\src\cnnClassifier\components\data_ingestion.py", line 28, in download_file
+    gdown.download(prefix+file_id,zip_download_dir)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 937, in download
+    _write_response(
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 657, in _write_response
+    for chunk, total in _iter_response_chunks(
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 624, in _iter_response_chunks
+    _wait_for_retry(retry=retry, error=transfer_error)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 304, in _wait_for_retry
+    _raise_retries_exhausted(error=error, retries=retry.retries)
+  File "C:\Users\amrut\anaconda3\envs\kidney\lib\site-packages\gdown\download.py", line 294, in _raise_retries_exhausted
+    raise error
+gdown.exceptions.DownloadError: Download is incomplete: received 1097334784 bytes but the server announced 1627919308 bytes.
+The received bytes are kept in C:\Users\amrut\Downloads\kidney-Disease-Classifiaction-DLProject\artifacts\data_ingestion\data.zipceadqvv1.part, which resume (--continue on the command line) picks up.
+[2026-10-12 16:00:54,758: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 16:00:54,761: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 16:00:54,764: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 16:00:54,765: INFO: common: created directory at: artifacts]
+[2026-10-12 16:00:54,766: INFO: common: created directory at: artifacts/data_ingestion]
+[2026-10-12 16:00:54,766: INFO: data_ingestion: Downloading data from https://drive.google.com/file/d/1TAFQkAHgxZyf3cYDFmAwC085iIjc8jy1/view into file artifacts/data_ingestion/data.zip]
+[2026-10-12 16:03:40,676: INFO: main: >>>>>> stage Data Ingestion stage started <<<<<<]
+[2026-10-12 16:03:40,680: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 16:03:40,682: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 16:03:40,683: INFO: common: created directory at: artifacts]
+[2026-10-12 16:03:40,684: INFO: common: created directory at: artifacts/data_ingestion]
+[2026-10-12 16:03:40,684: INFO: stage_01_data_ingestion: Skipping download and extraction.]
+[2026-10-12 16:03:40,684: INFO: stage_01_data_ingestion: Dataset directory: artifacts/data_ingestion]
+[2026-10-12 16:03:40,684: INFO: main: >>>>>> stage Data Ingestion stage completed <<<<<<]
+[2026-10-12 16:03:40,685: INFO: main: >>>>>> stage Prepare base model started <<<<<<]
+[2026-10-12 16:03:40,687: INFO: common: yaml file: config\config.yaml loaded successfully]
+[2026-10-12 16:03:40,689: INFO: common: yaml file: params.yaml loaded successfully]
+[2026-10-12 16:03:40,690: INFO: common: created directory at: artifacts]
+[2026-10-12 16:03:40,691: INFO: common: created directory at: artifacts/prepare_base_model]
+[2026-10-12 16:03:41,324: WARNING: saving_utils: Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.]
+[2026-10-12 16:03:41,670: INFO: main: >>>>>> stage Prepare base model completed <<<<<<]
