@@ -1,0 +1,445 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidney Disease Classification</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #eff2f9;
+            font-family: Arial, sans-serif;
+            color: #202633;
+        }
+
+        .page-title {
+            color: #1b2d6b;
+            font-size: 34px;
+            font-weight: 700;
+            text-align: center;
+            margin: 28px 0 10px;
+        }
+
+        .page-subtitle {
+            color: #68758a;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .app-panel {
+            background: #fff;
+            border: 1px solid #dedede;
+            border-radius: 6px;
+            padding: 22px;
+            height: 100%;
+        }
+
+        .panel-title {
+            color: #1b2d6b;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-frame {
+            width: 100%;
+            height: 360px;
+            border: 1px solid #dedede;
+            background: #f8f9fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #imagePreview {
+            display: none;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .placeholder {
+            color: #7b8494;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            min-height: 44px;
+            font-weight: 600;
+        }
+
+        .result-card {
+            min-height: 360px;
+            border: 1px solid #dedede;
+            background: #fff;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-wrap: anywhere;
+        }
+
+        .result-placeholder {
+            color: #7b8494;
+            text-align: center;
+        }
+
+        .prediction-label {
+            color: #1b2d6b;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .prediction-value {
+            font-size: 30px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .confidence-text,
+        .result-note {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .status-message {
+            margin-top: 14px;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        #loading {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.75);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loading.visible {
+            display: flex;
+        }
+
+        .loader {
+            width: 58px;
+            height: 58px;
+            border: 7px solid #e5e8f0;
+            border-top-color: #1b2d6b;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .app-panel {
+                padding: 16px;
+            }
+
+            .image-frame,
+            .result-card {
+                height: 300px;
+                min-height: 300px;
+            }
+
+            .page-title {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container py-4">
+
+        <h1 class="page-title">Kidney Disease Classification</h1>
+
+        <p class="page-subtitle">
+            Upload a kidney CT image to predict its dataset class.
+        </p>
+
+        <div class="row">
+
+            <!-- LEFT: Image upload and preview -->
+            <section class="col-lg-6 mb-4">
+                <div class="app-panel">
+
+                    <h2 class="panel-title">Upload CT Image</h2>
+
+                    <div class="image-frame">
+                        <p id="imagePlaceholder" class="placeholder">
+                            Your selected image will appear here.
+                        </p>
+
+                        <img
+                            id="imagePreview"
+                            src=""
+                            alt="Selected kidney CT image"
+                        >
+                    </div>
+
+                    <input
+                        type="file"
+                        id="imageInput"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <div class="button-row">
+                        <button
+                            type="button"
+                            id="uploadButton"
+                            class="btn btn-primary">
+                            Upload Image
+                        </button>
+
+                        <button
+                            type="button"
+                            id="predictButton"
+                            class="btn btn-success"
+                            disabled>
+                            Predict
+                        </button>
+                    </div>
+
+                    <p
+                        id="uploadStatus"
+                        class="status-message text-muted"
+                        role="status">
+                        Select an image to begin.
+                    </p>
+
+                </div>
+            </section>
+
+            <!-- RIGHT: Prediction result -->
+            <section class="col-lg-6 mb-4">
+                <div class="app-panel">
+
+                    <h2 class="panel-title">Prediction Results</h2>
+
+                    <div class="result-card" aria-live="polite">
+
+                        <div
+                            id="resultPlaceholder"
+                            class="result-placeholder">
+                            Your prediction will appear here after you click
+                            <strong>Predict</strong>.
+                        </div>
+
+                        <div id="predictionOutput" hidden>
+
+                            <div class="prediction-label">
+                                Predicted Class
+                            </div>
+
+                            <div
+                                id="predictedClass"
+                                class="prediction-value">
+                                —
+                            </div>
+
+                            <p
+                                id="confidence"
+                                class="confidence-text">
+                            </p>
+
+                            <p class="result-note text-muted">
+                                This is a model prediction, not a medical diagnosis.
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <p class="text-muted text-center small">
+            Educational project only. Consult a qualified medical professional
+            for clinical interpretation.
+        </p>
+
+    </main>
+
+    <!-- Loading indicator -->
+    <div id="loading" role="status" aria-label="Predicting image">
+        <div class="loader"></div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById("imageInput");
+        const uploadButton = document.getElementById("uploadButton");
+        const predictButton = document.getElementById("predictButton");
+        const imagePreview = document.getElementById("imagePreview");
+        const imagePlaceholder = document.getElementById("imagePlaceholder");
+        const uploadStatus = document.getElementById("uploadStatus");
+        const loading = document.getElementById("loading");
+
+        const resultPlaceholder =
+            document.getElementById("resultPlaceholder");
+        const predictionOutput =
+            document.getElementById("predictionOutput");
+        const predictedClass =
+            document.getElementById("predictedClass");
+        const confidence =
+            document.getElementById("confidence");
+
+        let base64Image = "";
+
+        // Open the file picker.
+        uploadButton.addEventListener("click", function () {
+            imageInput.click();
+        });
+
+        // Preview the selected image.
+        imageInput.addEventListener("change", function () {
+            const file = this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.type.startsWith("image/")) {
+                uploadStatus.textContent =
+                    "Please select a valid image file.";
+                this.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+                const imageDataUrl = event.target.result;
+
+                imagePreview.src = imageDataUrl;
+                imagePreview.style.display = "block";
+                imagePlaceholder.style.display = "none";
+
+                // Remove the Base64 header before sending to Flask.
+                base64Image = imageDataUrl.split(",")[1] || "";
+
+                predictButton.disabled = !base64Image;
+
+                uploadStatus.textContent =
+                    "Image uploaded. Click Predict to continue.";
+
+                resultPlaceholder.hidden = false;
+                resultPlaceholder.textContent =
+                    "Your prediction will appear here after you click Predict.";
+
+                predictionOutput.hidden = true;
+            };
+
+            reader.onerror = function () {
+                uploadStatus.textContent =
+                    "Unable to read the selected image.";
+                predictButton.disabled = true;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        // Send the image to the Flask prediction endpoint.
+        predictButton.addEventListener("click", async function () {
+            if (!base64Image) {
+                uploadStatus.textContent =
+                    "Please upload an image first.";
+                return;
+            }
+
+            loading.classList.add("visible");
+            predictButton.disabled = true;
+            uploadButton.disabled = true;
+
+            uploadStatus.textContent = "Prediction in progress...";
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        image: base64Image
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.error || "Prediction request failed."
+                    );
+                }
+
+                // Expected response:
+                // [{"image": "Normal", "confidence": 99.5}]
+                const prediction = Array.isArray(data) ? data[0] : data;
+
+                if (!prediction || !prediction.image) {
+                    throw new Error(
+                        prediction?.error ||
+                        "The server did not return a prediction."
+                    );
+                }
+
+                predictedClass.textContent = prediction.image;
+
+                confidence.textContent =
+                    prediction.confidence !== undefined
+                        ? "Model confidence: " +
+                          prediction.confidence + "%"
+                        : "";
+
+                resultPlaceholder.hidden = true;
+                predictionOutput.hidden = false;
+
+                uploadStatus.textContent = "Prediction completed.";
+
+            } catch (error) {
+                resultPlaceholder.hidden = false;
+                resultPlaceholder.textContent =
+                    error.message ||
+                    "Prediction failed. Please try again.";
+
+                predictionOutput.hidden = true;
+
+                uploadStatus.textContent =
+                    "Unable to complete prediction.";
+
+            } finally {
+                loading.classList.remove("visible");
+                predictButton.disabled = !base64Image;
+                uploadButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -6,6 +6,8 @@ import time
 import math
 from pathlib import Path
 from cnnClassifier.entity.config_entity import TrainingConfig
+import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
 
 class Training:
     def __init__(self, config: TrainingConfig):
@@ -65,6 +67,7 @@ class Training:
     def save_model(path: Path, model: tf.keras.Model):
         model.save(path)
     
+    
     def train(self):
         self.steps_per_epoch = math.ceil(
         self.train_generator.samples /
@@ -75,6 +78,21 @@ class Training:
         self.valid_generator.samples /
         self.valid_generator.batch_size
     )
+
+        # Calculate weights for each class
+        class_weights_array = compute_class_weight(
+        class_weight="balanced",
+        classes=np.unique(self.train_generator.classes),
+        y=self.train_generator.classes
+    )
+
+        class_weights = {
+        int(class_id): float(weight)
+        for class_id, weight in enumerate(class_weights_array)
+    }
+
+        print("Class mapping:", self.train_generator.class_indices)
+        print("Class weights:", class_weights)
 
         checkpoint = tf.keras.callbacks.ModelCheckpoint(
         filepath=str(self.config.trained_model_path),
@@ -89,5 +107,6 @@ class Training:
         steps_per_epoch=self.steps_per_epoch,
         validation_data=self.valid_generator,
         validation_steps=self.validation_steps,
-        callbacks=[checkpoint]
+        callbacks=[checkpoint],
+        class_weight=class_weights
     )
